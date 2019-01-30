@@ -24,17 +24,19 @@ ActiveRecord::Schema.define(version: 2019_01_29_183619) do
   create_table "recipe_ingredients", force: :cascade do |t|
     t.integer "recipe_id"
     t.integer "ingredient_id"
+    t.string "amount"
+    t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "recipes", force: :cascade do |t|
     t.string "name"
-    t.string "calories"
-    t.string "time"
+    t.integer "calories"
+    t.integer "time"
     t.string "url"
     t.string "source"
-    t.string "ingredients"
+    t.string "ingredients_bulk"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
