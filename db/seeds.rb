@@ -5,42 +5,17 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-# User.destroy_all
+RecipeIngredient.destroy_all
+User.destroy_all
 Recipe.destroy_all
 Ingredient.destroy_all
 #
-# u1 = User.create(name: "Matt")
-# puts "users added"
-#
 
 
-# EDAMAM SEED
-# def get_recipes
-#   request = RestClient.get("https://api.edamam.com/search?&app_id=bd44f2ae&app_key=0d2d5a4eccbf02f3f21f9e06e5b9bacd&from=0&to=25&q=chicken+paprika")
-#   response = JSON.parse(request)
-#   results = response["hits"]
-#   results.each do |result|
-#     Recipe.create(name: result['recipe']['label'],
-#                   calories: result['recipe']['calories'],
-#                   time: result['recipe']['totalTime'],
-#                   url: result['recipe']['url'],
-#                   source: result['recipe']['source'],
-#                   ingredients_bulk: result['recipe']['ingredientLines'].join("@@@")
-#     )
-#    end
-#
-#
-#
-# end
-#
-# get_recipes
-# puts "recipes added"
+User.create(name: "Matt")
+puts "users added"
 
 
-
-
-#
 def get_ingredients
   request = RestClient.get("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
   response = JSON.parse(request)
@@ -53,19 +28,25 @@ end
 get_ingredients
 puts "ingredients added"
 
-def add_recipe_ingredient(recipe_meal_id, ingredient_name, measurement)
+def add_recipe_ingredient(recipe_meal_id, ingredient_name, measurement, correct_ri_length)
   recipe = Recipe.find_by(idMeal: recipe_meal_id)
   ingredient =  Ingredient.find_by(name: ingredient_name.downcase)
-  puts recipe.id
-  puts ingredient.id
-  measurement_array = measurement.split(" ")
-  if measurement_array.length > 2 || measurement_array.length == 1
-    puts "amount #{measurement}"
-    puts "unit: #{nil}"
+  # puts recipe.id
+  # puts ingredient.id
+  if !!recipe && !!ingredient && recipe.recipe_ingredients.length < correct_ri_length
+    RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: ingredient.id, measurement: measurement)
   else
-    puts "amount: #{measurement_array[0]}"
-    puts "unit: #{measurement_array[1]}"
+    puts "broken r_i add"
   end
+
+  # measurement_array = measurement.split(" ")
+  # if measurement_array.length > 2 || measurement_array.length == 1
+  #   puts "amount #{measurement}"
+  #   puts "unit: #{nil}"
+  # else
+  #   puts "amount: #{measurement_array[0]}"
+  #   puts "unit: #{measurement_array[1]}"
+  # end
 end
 
 def get_recipes
@@ -88,46 +69,59 @@ def get_recipes
     )
   end
 
+  ri_length = 0
+
+  ri_length += 1 if result["strIngredient1"].present?
+  ri_length += 1 if result["strIngredient2"].present?
+  ri_length += 1 if result["strIngredient3"].present?
+  ri_length += 1 if result["strIngredient4"].present?
+  ri_length += 1 if result["strIngredient5"].present?
+  ri_length += 1 if result["strIngredient6"].present?
+  ri_length += 1 if result["strIngredient7"].present?
+  ri_length += 1 if result["strIngredient8"].present?
+  ri_length += 1 if result["strIngredient9"].present?
+  ri_length += 1 if result["strIngredient10"].present?
+  ri_length += 1 if result["strIngredient11"].present?
+  ri_length += 1 if result["strIngredient12"].present?
+  ri_length += 1 if result["strIngredient13"].present?
+  ri_length += 1 if result["strIngredient14"].present?
+  ri_length += 1 if result["strIngredient15"].present?
+  ri_length += 1 if result["strIngredient16"].present?
+  ri_length += 1 if result["strIngredient17"].present?
+  ri_length += 1 if result["strIngredient18"].present?
+  ri_length += 1 if result["strIngredient19"].present?
+  ri_length += 1 if result["strIngredient20"].present?
+
   if Recipe.find_by(idMeal: result["idMeal"])
-    puts "added + yay"
-    # recipe = Recipe.find_by(idMeal: result["idMeal"])
-    add_recipe_ingredient(result["idMeal"], result["strIngredient1"], result["strMeasure1"]) if result["strIngredient1"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient2"], result["strMeasure2"]) if result["strIngredient2"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient3"], result["strMeasure3"]) if result["strIngredient3"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient4"], result["strMeasure4"]) if result["strIngredient4"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient5"], result["strMeasure5"]) if result["strIngredient5"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient6"], result["strMeasure6"]) if result["strIngredient6"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient7"], result["strMeasure7"]) if result["strIngredient7"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient8"], result["strMeasure8"]) if result["strIngredient8"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient9"], result["strMeasure9"]) if result["strIngredient9"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient10"], result["strMeasure10"]) if result["strIngredient10"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient11"], result["strMeasure11"]) if result["strIngredient11"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient12"], result["strMeasure12"]) if result["strIngredient12"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient13"], result["strMeasure13"]) if result["strIngredient13"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient14"], result["strMeasure14"]) if result["strIngredient14"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient15"], result["strMeasure15"]) if result["strIngredient15"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient16"], result["strMeasure16"]) if result["strIngredient16"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient17"], result["strMeasure17"]) if result["strIngredient17"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient18"], result["strMeasure18"]) if result["strIngredient18"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient19"], result["strMeasure19"]) if result["strIngredient19"].present?
-    add_recipe_ingredient(result["idMeal"], result["strIngredient20"], result["strMeasure20"]) if result["strIngredient20"].present?
+    puts "yay"
+    add_recipe_ingredient(result["idMeal"], result["strIngredient1"], result["strMeasure1"], ri_length) if result["strIngredient1"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient2"], result["strMeasure2"], ri_length) if result["strIngredient2"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient3"], result["strMeasure3"], ri_length) if result["strIngredient3"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient4"], result["strMeasure4"], ri_length) if result["strIngredient4"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient5"], result["strMeasure5"], ri_length) if result["strIngredient5"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient6"], result["strMeasure6"], ri_length) if result["strIngredient6"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient7"], result["strMeasure7"], ri_length) if result["strIngredient7"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient8"], result["strMeasure8"], ri_length) if result["strIngredient8"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient9"], result["strMeasure9"], ri_length) if result["strIngredient9"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient10"], result["strMeasure10"], ri_length) if result["strIngredient10"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient11"], result["strMeasure11"], ri_length) if result["strIngredient11"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient12"], result["strMeasure12"], ri_length) if result["strIngredient12"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient13"], result["strMeasure13"], ri_length) if result["strIngredient13"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient14"], result["strMeasure14"], ri_length) if result["strIngredient14"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient15"], result["strMeasure15"], ri_length) if result["strIngredient15"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient16"], result["strMeasure16"], ri_length) if result["strIngredient16"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient17"], result["strMeasure17"], ri_length) if result["strIngredient17"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient18"], result["strMeasure18"], ri_length) if result["strIngredient18"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient19"], result["strMeasure19"], ri_length) if result["strIngredient19"].present?
+    add_recipe_ingredient(result["idMeal"], result["strIngredient20"], result["strMeasure20"], ri_length) if result["strIngredient20"].present?
   else
-    puts "added + nope"
+    puts "boo"
   end
 
-#  puts "yay" if result['strIngredient10'].present?
-
-
-  # Recipe.create(
-  #   name: result["strMeal"],
-  #   idMeal: result["idMeal"],
-  #   category: result["strCategory"],
-  #   area: result["strArea"],
-  #   instructions: result["strInstructions"],
-  #   image: result["strMealThumb"],
-  #   youtube: result["strYoutube"],
-  #   tags: result["strTags"],
-  #   source: result["strSource"],
-  # )
 end
-get_recipes
+
+
+until Recipe.all.length == 187
+  get_recipes
+  puts "#{Recipe.all.length}"
+end
