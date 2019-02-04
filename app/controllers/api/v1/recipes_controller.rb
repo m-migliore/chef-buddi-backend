@@ -19,6 +19,11 @@ class Api::V1::RecipesController < ApplicationController
     end
   end
 
+  def find
+    @recipes = Recipe.with_ingredients(params[:selections])
+    render json: @recipes, status: :accepted
+  end
+
   private
 
   def recipe_params

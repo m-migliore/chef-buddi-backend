@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :user_recipes, only: [:index, :show, :update]
       resources :user_ingredients, only: [:index, :show, :update]
       resources :recipe_ingredients, only: [:index, :show, :update]
+      post 'recipes/find', to: 'recipes#find'
     end
   end
 end
