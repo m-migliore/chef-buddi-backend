@@ -10,6 +10,15 @@ class Api::V1::UserRecipesController < ApplicationController
     render json: @user_recipe
   end
 
+  def create
+    @user_recipe = UserRecipe.create(user_recipe_params)
+    if @user_recipe.save
+      render json: @user_recipe, status: :accepted
+    else
+      render json: { errors: @user_recipe.errors.full_messages }, status: :unprocessible_entity
+    end
+  end
+
   def update
     @user_recipe.update(user_recipe_params)
     if @user_recipe.save
