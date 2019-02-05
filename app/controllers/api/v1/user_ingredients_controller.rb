@@ -1,5 +1,5 @@
 class Api::V1::UserIngredientsController < ApplicationController
-  before_action :find_user_ingredient, only: [:show, :update]
+  before_action :find_user_ingredient, only: [:show, :update, :destroy]
 
   def index
     @user_ingredients = UserIngredient.all
@@ -17,6 +17,10 @@ class Api::V1::UserIngredientsController < ApplicationController
     else
       render json: { errors: @user_ingredient.errors.full_messages }, status: :unprocessible_entity
     end
+  end
+
+  def destroy
+    @user_ingredient.destroy
   end
 
   private
