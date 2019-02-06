@@ -12,6 +12,8 @@ class Api::V1::AddRecipeController < ApplicationController
 
     @recipe = Recipe.create(cleaned_params)
     if @recipe.save
+      # create_recipe_ingredients(params[:ingredients], @recipe)
+
       @user_recipe = UserRecipe.create(user_id: recipe_params[:userId], recipe_id: @recipe.id)
       if @user_recipe.save
         byebug
@@ -25,19 +27,34 @@ class Api::V1::AddRecipeController < ApplicationController
 
   end
 
-  def test
-    ingreds = params[:ingredients]
+  # def create_recipe_ingredients
+  #   ingreds = params[:ingredients]
+  #
+  #   ingreds.map do |i|
+  #     if !!Ingredient.find_by(name: i.downcase)
+  #       ingred_id = Ingredient.find_by(name: i.downcase).id
+  #       RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: ingred_id)
+  #     else
+  #       @ingredient = Ingredient.create(name: i.downcase)
+  #       RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: @ingredient.id)
+  #     end
+  #   end
+  #
+  # end
 
-    test = ingreds.map do |i|
+
+  def create_recipe_ingredients(ingred_list, recipe)
+
+
+    ingred_list.map do |i|
       if !!Ingredient.find_by(name: i.downcase)
-        Ingredient.find_by(name: i.downcase).id
+        ingred_id = Ingredient.find_by(name: i.downcase).id
+        RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: ingred_id)
       else
-        "boo"
+        @ingredient = Ingredient.create(name: i.downcase)
+        RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: @ingredient.id)
       end
     end
-
-    byebug
-    puts "sup"
 
   end
 
