@@ -10,6 +10,15 @@ class Api::V1::RecipesController < ApplicationController
     render json: @recipe, serializer: SingleRecipeSerializer
   end
 
+  def create
+    @recipe = Recipe.create(recipe_params)
+    if @recipe.save
+      render json: @recipe, status: :accepted
+    else
+      render json: { errors: @recipe.errors.full_messages }, status: :unprocessible_entity
+    end
+  end
+
   def update
     @recipe.update(recipe_params)
     if @recipe.save
