@@ -12,6 +12,7 @@ class Api::V1::RecipesController < ApplicationController
 
   def create
     @recipe = Recipe.create(recipe_params)
+    byebug
     if @recipe.save
       render json: @recipe, status: :accepted
     else

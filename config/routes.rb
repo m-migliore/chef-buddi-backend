@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, only: [:index, :show, :create, :update]
-      resources :recipes, only: [:index, :show, :update]
+      resources :recipes, only: [:index, :show, :create, :update]
       resources :ingredients, only: [:index, :show, :update]
       resources :user_recipes, only: [:index, :show, :create,  :destroy]
       resources :user_ingredients, only: [:index, :create, :destroy]
@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
       post 'recipes/find', to: 'recipes#find'
       post "/login", to: "users#login"
+      post 'recipes/add', to: 'add_recipe#add'
     end
   end
 end
