@@ -12,7 +12,7 @@ Ingredient.destroy_all
 #
 
 
-User.create(name: "Matt")
+User.create(name: "Matt", password: "1234")
 puts "users added"
 
 

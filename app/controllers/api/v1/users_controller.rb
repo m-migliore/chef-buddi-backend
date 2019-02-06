@@ -19,10 +19,19 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def login
+    @user = User.all.find_by(username: params[:username])
+    if @user.authenticate(params[:password])
+      render json: @user
+    else
+      render json: {status: "denied"}
+    end
+  end
+
   private
 
   def user_params
-    params.permit(:name)
+    params.permit(:username, :password)
   end
 
   def find_user
