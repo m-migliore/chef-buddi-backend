@@ -42,6 +42,25 @@ class Api::V1::AddRecipeController < ApplicationController
   #
   # end
 
+  def test
+    ingreds = params[:ingredients]
+
+    ingreds.each do |i|
+      if !!Ingredient.find_by(name: i[:name].downcase)
+        "yay"
+        ingred_id = Ingredient.find_by(name: i[:name].downcase).id
+        RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: ingred_id, measurement: i[:measurement])
+      else
+        "boo"
+        @ingredient = Ingredient.create(name: i[:name].downcase)
+        RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: @ingredient.id, measurement: i[:measurement])
+      end
+    end
+
+    byebug
+    puts "m"
+  end
+
 
   def create_recipe_ingredients(ingred_list, recipe)
 
