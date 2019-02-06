@@ -25,9 +25,25 @@ class Api::V1::AddRecipeController < ApplicationController
 
   end
 
+  def test
+    ingreds = params[:ingredients]
+
+    test = ingreds.map do |i|
+      if !!Ingredient.find_by(name: i.downcase)
+        Ingredient.find_by(name: i.downcase).id
+      else
+        "boo"
+      end
+    end
+
+    byebug
+    puts "sup"
+
+  end
+
   private
 
   def recipe_params
-    params.permit(:name, :category, :area, :instructions, :image, :youtube, :tags, :source, :custom, :userId)
+    params.permit(:name, :category, :area, :instructions, :image, :youtube, :tags, :source, :custom, :userId, :ingredients)
   end
 end

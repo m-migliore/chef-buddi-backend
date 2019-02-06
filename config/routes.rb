@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post 'recipes/find', to: 'recipes#find'
       post "/login", to: "users#login"
       post 'recipes/add', to: 'add_recipe#add'
+      post 'recipes/test', to: 'add_recipe#test'
     end
   end
 end
