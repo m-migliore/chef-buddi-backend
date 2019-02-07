@@ -4,6 +4,8 @@ class Recipe < ApplicationRecord
   has_many :recipe_ingredients
   has_many :ingredients, through: :recipe_ingredients
 
+  has_many :meals
+
   def self.with_ingredients(selections)
     recipes = Recipe.all
 
