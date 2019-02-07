@@ -7,12 +7,14 @@ class Api::V1::AddRecipeController < ApplicationController
     non_nil_params.each do |key,value|
       if (value.is_a? String) && (!value.empty?)
         cleaned_params[key] = value
+      else 
+        cleaned_params[key] = value
       end
     end
 
     @recipe = Recipe.create(cleaned_params)
     if @recipe.save
-      # create_recipe_ingredients(params[:ingredients], @recipe)
+      create_recipe_ingredients(params[:ingredients], @recipe)
 
       @user_recipe = UserRecipe.create(user_id: recipe_params[:userId], recipe_id: @recipe.id)
       if @user_recipe.save
@@ -57,21 +59,35 @@ class Api::V1::AddRecipeController < ApplicationController
       end
     end
 
-    byebug
-    puts "m"
   end
 
 
+  # def create_recipe_ingredients(ingred_list, recipe)
+  #
+  #
+  #   ingred_list.map do |i|
+  #     if !!Ingredient.find_by(name: i.downcase)
+  #       ingred_id = Ingredient.find_by(name: i.downcase).id
+  #       RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: ingred_id)
+  #     else
+  #       @ingredient = Ingredient.create(name: i.downcase)
+  #       RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: @ingredient.id)
+  #     end
+  #   end
+  #
+  # end
+
   def create_recipe_ingredients(ingred_list, recipe)
 
-
-    ingred_list.map do |i|
-      if !!Ingredient.find_by(name: i.downcase)
-        ingred_id = Ingredient.find_by(name: i.downcase).id
-        RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: ingred_id)
+    ingred_list.each do |i|
+      if !!Ingredient.find_by(name: i[:name].downcase)
+        "yay"
+        ingred_id = Ingredient.find_by(name: i[:name].downcase).id
+        RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: ingred_id, measurement: i[:measurement])
       else
-        @ingredient = Ingredient.create(name: i.downcase)
-        RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: @ingredient.id)
+        "boo"
+        @ingredient = Ingredient.create(name: i[:name].downcase)
+        RecipeIngredient.create(recipe_id: recipe.id, ingredient_id: @ingredient.id, measurement: i[:measurement])
       end
     end
 
