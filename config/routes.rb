@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       resources :user_recipes, only: [:index, :show, :create,  :destroy]
       resources :user_ingredients, only: [:index, :create, :destroy]
       resources :recipe_ingredients, only: [:index, :show, :update]
+      resources :meals, only: [:index, :create, :destroy]
+      resources :mealplans, only: [:index, :create, :show, :update, :destroy]
 
       post 'recipes/find', to: 'recipes#find'
       post "/login", to: "users#login"

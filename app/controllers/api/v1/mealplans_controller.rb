@@ -1,4 +1,4 @@
-class Api::V1::MealplanController < ApplicationController
+class Api::V1::MealplansController < ApplicationController
   before_action :find_mealplan, only: [:show, :destroy]
 
   def index

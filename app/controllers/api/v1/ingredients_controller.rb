@@ -2,7 +2,7 @@ class Api::V1::IngredientsController < ApplicationController
   before_action :find_ingredient, only: [:show, :update]
 
   def index
-    @ingredients = Ingredient.all
+    @ingredients = Ingredient.all.order(:name)
     render json: @ingredients
   end
 
