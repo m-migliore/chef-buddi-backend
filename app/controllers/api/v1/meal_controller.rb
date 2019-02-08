@@ -2,7 +2,7 @@ class Api::V1::MealController < ApplicationController
   before_action :find_meal, only: [:show, :destroy]
 
   def index
-    @meals = Mealplan.all
+    @meals = Meal.all
     render json: @meals
   end
 
@@ -11,7 +11,7 @@ class Api::V1::MealController < ApplicationController
   end
 
   def create
-    @meal = Mealplan.create(meal_params)
+    @meal = Meal.create(meal_params)
     if @meal.save
       render json: @meal, status: :accepted
     else
@@ -35,7 +35,7 @@ class Api::V1::MealController < ApplicationController
   private
 
   def meal_params
-    params.permit(:user_id)
+    params.permit(:mealplan_id, :recipe_id)
   end
 
   def find_meal
