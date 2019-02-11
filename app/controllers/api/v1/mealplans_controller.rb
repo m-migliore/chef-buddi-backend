@@ -13,6 +13,9 @@ class Api::V1::MealplansController < ApplicationController
   def create
     @mealplan = Mealplan.create(mealplan_params)
     if @mealplan.save
+      params[:recipeIds].each do |recipe_id|
+        Meal.create(mealplan_id: @mealplan.id, recipe_id: recipe_id)
+      end
       render json: @mealplan, status: :accepted
     else
       render json: { errors: @mealplan.errors.full_messages }, status: :unprocessible_entity
