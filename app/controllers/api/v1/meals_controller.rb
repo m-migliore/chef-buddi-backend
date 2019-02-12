@@ -30,6 +30,8 @@ class Api::V1::MealsController < ApplicationController
 
   def destroy
     @meal.destroy
+    @mealplan = Mealplan.find(@meal.mealplan_id)
+    render json: @mealplan
   end
 
   private
