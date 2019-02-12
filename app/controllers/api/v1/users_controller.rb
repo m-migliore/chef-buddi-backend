@@ -30,10 +30,15 @@ class Api::V1::UsersController < ApplicationController
 
   def login
     @user = User.all.find_by(username: params[:username])
-    if @user.authenticate(params[:password])
-      render json: @user
+
+    if @user.nil?
+      render json: { type: "username", error: "Username not found" }, status: :error
     else
-      render json: {status: "denied"}
+      if @user.authenticate(params[:password])
+        render json: @user
+      else
+        render json: { type: "password", error: "Incorrect password" }, status: :error
+      end
     end
   end
 
