@@ -32,7 +32,10 @@ class Api::V1::MealplansController < ApplicationController
   # end
 
   def destroy
+    meals = @mealplan.meals.map{|meal| meal.id}
+    Meal.destroy(meals)
     @mealplan.destroy
+    render json: {status: "meal deleted"}
   end
 
   private
